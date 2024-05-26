@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/NZWalk/.vs/NZWalk/v17
+/NZWalk/.vs/NZWalk/FileContentIndex
+/NZWalk/NZWalk-API/obj
