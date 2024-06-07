@@ -53,20 +53,26 @@ namespace NZWalk_API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var regionsDomain = await _DBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
-            if (regionsDomain == null)
+            var Region = await _regionRepository.GetByIdAsync(id);
+            if (Region is not null)
             {
-                NotFound();
+                //Map To DTO 
+                var regionDTO = new RegionDto()
+                {
+                    Id = Region.Id,
+                    Code = Region.Code,
+                    Name = Region.Name,
+                    RegionImageUrl = Region.RegionImageUrl
+                };
+                return Ok(regionDTO);
             }
-            // Map to DTo 
-            var regionDto = new RegionDto()
+            else
             {
-                Id = regionsDomain.Id,
-                Code = regionsDomain.Code,
-                Name = regionsDomain.Name,
-                RegionImageUrl = regionsDomain.RegionImageUrl,
-            };
-            return Ok(regionDto);
+                var error = id +  " Not Found ";
+                return NotFound(error);
+
+            }
+
         }
         #endregion
 
@@ -93,23 +99,24 @@ namespace NZWalk_API.Controllers
         [ActionName("Update")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateResionRequestDTO updateResionRequestDTO)
         {
-            var ResionDomainModel = await _DBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
-            if (ResionDomainModel is null)
+            //Map DTO To Domain Model
+            var RegionDomainModel = new Region
             {
-                return NotFound();
-            }
-            // DTO to Domain
-            ResionDomainModel.Code = updateResionRequestDTO.Code;
-            ResionDomainModel.Name = updateResionRequestDTO.Name;
-            ResionDomainModel.RegionImageUrl = updateResionRequestDTO.RegionImageUrl;
-            await _DBContext.SaveChangesAsync();
-            //Convert Domain TO DTO
+                Id=id,
+                Code=updateResionRequestDTO.Code,
+                Name=updateResionRequestDTO.Name,
+                RegionImageUrl=updateResionRequestDTO.RegionImageUrl
+            };
+
+            await _regionRepository.UpdateAsync(id, RegionDomainModel);
+          
+          //Convert Domain TO DTO
             var regionDTO = new RegionDto
             {
-                Id = ResionDomainModel.Id,
-                Code = ResionDomainModel.Code,
-                Name = ResionDomainModel.Name,
-                RegionImageUrl = ResionDomainModel.RegionImageUrl
+                Id = RegionDomainModel.Id,
+                Code = RegionDomainModel.Code,
+                Name = RegionDomainModel.Name,
+                RegionImageUrl = RegionDomainModel.RegionImageUrl
             };
             return Ok(regionDTO);
         }
@@ -120,23 +127,21 @@ namespace NZWalk_API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var ResionDomainModel = await _DBContext.Regions.FirstOrDefaultAsync(c => c.Id == id);
-            if (ResionDomainModel is null)
+          var ExistingRegion= await _regionRepository.DeleteAsync(id);
+            if (ExistingRegion != null)
             {
-                NotFound();
+                //return Delete Model back
+                //map Domain Model To DTO
+                var regionDTO = new RegionDto
+                {
+                    Id = ExistingRegion.Id,
+                    Code = ExistingRegion.Code,
+                    Name = ExistingRegion.Name,
+                    RegionImageUrl = ExistingRegion.RegionImageUrl
+                };
+                return Ok(regionDTO);
             }
-            _DBContext.Regions.Remove(ResionDomainModel);
-            await _DBContext.SaveChangesAsync();
-            //return Delete Model back
-            //map Domain Model To DTO
-            var regionDTO = new RegionDto
-            {
-                Id = ResionDomainModel.Id,
-                Code = ResionDomainModel.Code,
-                Name = ResionDomainModel.Name,
-                RegionImageUrl = ResionDomainModel.RegionImageUrl
-            };
-            return Ok(regionDTO);
+            return BadRequest();
         }
         #endregion
     }

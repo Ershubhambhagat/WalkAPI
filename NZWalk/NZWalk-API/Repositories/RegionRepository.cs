@@ -1,4 +1,5 @@
 ﻿#region Using
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,9 +56,17 @@ namespace NZWalk_API.Repositories
 
         #region DeleteAsync
 
-        public Task<RegionDto> DeleteAsync(Guid Id)
+        public async Task<RegionDto> DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var ExistingRegion = await GetByIdAsync(Id);
+            
+            if(ExistingRegion is null)
+            {
+                return null;
+            }
+             _nZWalksDBContext.Regions.Remove(ExistingRegion);
+            SaveAsync();
+            return ExistingRegion;
         }
 
 
@@ -73,11 +82,12 @@ namespace NZWalk_API.Repositories
 
         #endregion
 
-        #region GetById
+        #region GetByIdAsync
 
-        public Task<RegionDto> GetById(Guid Id)
+        public async Task<RegionDto> GetByIdAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            return await _nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+          
         }
         #endregion
 
@@ -92,9 +102,20 @@ namespace NZWalk_API.Repositories
 
         #region UpdateAsync
 
-        public Task<RegionDto> UpdateAsync(Guid Id, UpdateResionRequestDTO updateResionRequestDTO)
+        public async Task<RegionDto?> UpdateAsync(Guid Id, Region region)
         {
-            throw new NotImplementedException();
+            var existingRegion = await _nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+            if (existingRegion == null)
+            {
+                return null;
+            }
+            existingRegion.Code = region.Code;
+            existingRegion.RegionImageUrl = region.RegionImageUrl;
+            existingRegion.Name= region.Name;
+            await SaveAsync();
+            return existingRegion;
+
+
         }
 
         #endregion

@@ -7,9 +7,9 @@ namespace NZWalk_API.Repositories.Interface
     public interface IRegionRepository
     {
         Task<List<RegionDto>> GetAllAsync();
-        Task<RegionDto> GetById(Guid Id);
+        Task<RegionDto?> GetByIdAsync(Guid Id);
         Task<RegionDto> CreateAsync(AddRegionRequestDTO addRegionRequestDTO);
-        Task<RegionDto> UpdateAsync(Guid Id,UpdateResionRequestDTO updateResionRequestDTO);
+        Task<RegionDto?> UpdateAsync(Guid Id,Region region);
         Task<RegionDto> DeleteAsync(Guid Id);
         Task SaveAsync();
         
