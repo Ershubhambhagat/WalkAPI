@@ -8,7 +8,7 @@ namespace NZWalk_API.Repositories.Interface
     {
         Task<List<RegionDto>> GetAllAsync();
         Task<RegionDto?> GetByIdAsync(Guid Id);
-        Task<RegionDto> CreateAsync(AddRegionRequestDTO addRegionRequestDTO);
+        Task<RegionDto> CreateAsync(RegionDto region);
         Task<RegionDto?> UpdateAsync(Guid Id,Region region);
         Task<RegionDto> DeleteAsync(Guid Id);
         Task SaveAsync();

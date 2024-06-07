@@ -24,32 +24,15 @@ namespace NZWalk_API.Repositories
         #endregion
 
         #region CreateAsync
-        public async Task<RegionDto> CreateAsync(AddRegionRequestDTO addRegionRequestDTO)
+        public async Task<RegionDto> CreateAsync(RegionDto region)
         {
-           
-                // DTO To Domain
-                var RegionDomainModel = new RegionDto
-                {
-                    Code = addRegionRequestDTO.Code,
-                    Name=addRegionRequestDTO.Name,
-                    RegionImageUrl=addRegionRequestDTO.RegionImageUrl,
-                };
 
-                // use RegionDomainModel to Create 
-                await _nZWalksDBContext.Regions.AddAsync(RegionDomainModel);
+            var regionDto = await _nZWalksDBContext.Regions.AddAsync(region);
                 await SaveAsync();
                 //Map Domain Model back to DTO
-                var regionDTO = new RegionDto
-                { 
-                    Id=RegionDomainModel.Id,
-                    Name=RegionDomainModel.Name,
-                    RegionImageUrl=RegionDomainModel.RegionImageUrl,
-                    Code=addRegionRequestDTO.Code,
-
-                };
-               return regionDTO;
             
-           
+               
+           return region;
         }
 
         #endregion
@@ -65,7 +48,7 @@ namespace NZWalk_API.Repositories
                 return null;
             }
              _nZWalksDBContext.Regions.Remove(ExistingRegion);
-            SaveAsync();
+            await SaveAsync();
             return ExistingRegion;
         }
 
@@ -76,8 +59,10 @@ namespace NZWalk_API.Repositories
         public async Task<List<RegionDto>> GetAllAsync()
         {
 
-            return await _nZWalksDBContext.Regions.ToListAsync(); 
-            
+          var region=   await _nZWalksDBContext.Regions.ToListAsync();
+            return region;
+
+
         }
 
         #endregion
