@@ -3,6 +3,8 @@ using NZWalk_API.Data;
 using NZWalk_API.Mappings;
 using NZWalk_API.Repositories;
 using NZWalk_API.Repositories.Interface;
+using NZWalk_API.Repositories.Walk_Repository;
+using NZWalk_API.Repositories.Walk_Repository.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NZWalksDBContext>(options => options.
 UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 builder.Services.AddScoped<IRegionRepository,RegionRepository>();
+builder.Services.AddScoped<IWalkRepository, WalkRepository>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 

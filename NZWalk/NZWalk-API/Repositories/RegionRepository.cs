@@ -77,10 +77,10 @@ namespace NZWalk_API.Repositories
         #endregion
 
         #region SaveAsync
-        public Task SaveAsync()
+        public async Task SaveAsync()
         {
-            _nZWalksDBContext.SaveChangesAsync();
-            return Task.CompletedTask;
+            await _nZWalksDBContext.SaveChangesAsync();
+            
         }
 
         #endregion

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NZWalk_API.Data;
 
@@ -11,9 +12,11 @@ using NZWalk_API.Data;
 namespace NZWalk_API.Migrations
 {
     [DbContext(typeof(NZWalksDBContext))]
-    partial class NZWalksDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240607145853_Seeding data for Region")]
+    partial class SeedingdataforRegion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace NZWalk_API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("NZWalk_API.Model.DTO.DifficultyDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Difficulty");
+                });
 
             modelBuilder.Entity("NZWalk_API.Model.DTO.RegionDto", b =>
                 {
@@ -44,19 +62,39 @@ namespace NZWalk_API.Migrations
                     b.ToTable("Regions");
                 });
 
-            modelBuilder.Entity("NZWalk_API.Model.Domain.Difficulty", b =>
+            modelBuilder.Entity("NZWalk_API.Model.DTO.WalkDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DiffucaltyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("LengthInKm")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RegionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RegionImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Difficulty");
+                    b.HasIndex("DiffucaltyId");
+
+                    b.HasIndex("RegionId");
+
+                    b.ToTable("Walks");
                 });
 
             modelBuilder.Entity("NZWalk_API.Model.Domain.Region", b =>
@@ -116,50 +154,15 @@ namespace NZWalk_API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("NZWalk_API.Model.Domain.Walk", b =>
+            modelBuilder.Entity("NZWalk_API.Model.DTO.WalkDto", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("DiffucaltyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("LengthInKm")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RegionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("WalkImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiffucaltyId");
-
-                    b.HasIndex("RegionId");
-
-                    b.ToTable("Walks");
-                });
-
-            modelBuilder.Entity("NZWalk_API.Model.Domain.Walk", b =>
-                {
-                    b.HasOne("NZWalk_API.Model.Domain.Difficulty", "Diffucalty")
+                    b.HasOne("NZWalk_API.Model.DTO.DifficultyDto", "Diffucalty")
                         .WithMany()
                         .HasForeignKey("DiffucaltyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NZWalk_API.Model.Domain.Region", "Region")
+                    b.HasOne("NZWalk_API.Model.DTO.RegionDto", "Region")
                         .WithMany()
                         .HasForeignKey("RegionId")
                         .OnDelete(DeleteBehavior.Cascade)
