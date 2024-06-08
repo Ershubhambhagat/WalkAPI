@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using NZWalk_API.CustomActionFilter;
 using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
@@ -62,10 +63,10 @@ namespace NZWalk_API.Controllers
 
         #region Create
         [HttpPost]
+        [ValidateModel]// Coustom Validater 
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
-            if (ModelState.IsValid)
-            {
+            
                 if (addRegionRequestDTO is null)
                 {
 
@@ -77,9 +78,6 @@ namespace NZWalk_API.Controllers
                 var RegionDto = (mapper.Map<RegionDto>(RegionDomainModel));
                 return Ok(RegionDto);
 
-            }
-            
-            return BadRequest(ModelState);
                                                                                                                                   
         }
         #endregion
@@ -88,10 +86,11 @@ namespace NZWalk_API.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ActionName("Update")]
+        [ValidateModel]// Coustom Validater 
+
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            if (ModelState.IsValid)
-            {
+            
                 //Map DTO To Domain Model
                 var RegionDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
 
@@ -100,8 +99,7 @@ namespace NZWalk_API.Controllers
                 //Convert Domain TO DTO
                 var regionDTO = mapper.Map<RegionDto>(RegionDomainModel);
                 return Ok(regionDTO);
-            }
-            return BadRequest(ModelState);
+           
         }
         #endregion
 
