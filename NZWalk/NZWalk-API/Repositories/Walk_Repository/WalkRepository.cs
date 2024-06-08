@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
+using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
 
 namespace NZWalk_API.Repositories.Walk_Repository
@@ -9,7 +11,7 @@ namespace NZWalk_API.Repositories.Walk_Repository
     public class WalkRepository : IWalkRepository
     {
 
-        #region MyRegion
+        #region Ctor
         private readonly NZWalksDBContext _dbContext;
 
         public WalkRepository(NZWalksDBContext dbContext)
@@ -20,22 +22,15 @@ namespace NZWalk_API.Repositories.Walk_Repository
 
 
         #endregion
-        #region MyRegion
-        public async Task<Walk> CreateAsync(Walk walk)
+
+        #region CreateWalkAsync
+        public async Task<Walk> CreateWalkAsync(Walk walk)
         {
             await _dbContext.Walks.AddAsync(walk);
             await SaveWalk();
             return walk;
         }
-
-        public Task<Walk> GetAsync(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
+  
         #endregion
 
         #region SaveWalk
@@ -47,16 +42,60 @@ namespace NZWalk_API.Repositories.Walk_Repository
 
         #endregion
 
-        #region MyRegion
+        #region GetWalkById
+
+        public async Task<Walk?> GetWalkById(Guid Id)
+        {
+            return await _dbContext.Walks.Include("Diffucalty").Include(x => x.Region).FirstOrDefaultAsync(x => x.Id == Id);
+        }
 
 
 
         #endregion
-        #region MyRegion
 
+        #region GetAllWalkAsync
+        public async Task<List<Walk>> GetAllWalkAsync()
+        {
+            return await _dbContext.Walks.Include("Diffucalty").Include(x=>x.Region).ToListAsync();
+        }
+        #endregion
+
+        #region UpdateWAlkAsync
+       
+        public async Task<Walk?> UpdateWAlkAsync(Guid Id,Walk walk)
+        {
+            var existingWalk =await _dbContext.Walks.FirstOrDefaultAsync(x=>x.Id==Id);  
+            if (existingWalk == null) 
+            { return null;  }
+            existingWalk.Id = Id;
+            existingWalk.Name = walk.Name;
+            //existingWalk.Region = walk.Region;
+            existingWalk.Description= walk.Description;
+            existingWalk.LengthInKm = walk.LengthInKm;
+            existingWalk.Diffucalty = walk.Diffucalty;
+            existingWalk.RegionId=walk.RegionId;
+            await SaveWalk();
+            return walk;
+
+        }
+        #endregion
+
+        #region DeleteAsync
+        public async Task<Walk?> DeleteAsync(Guid Id)
+        {
+            var data =await GetWalkById(Id);
+            if(data== null)
+            {
+                return null;
+            }
+            _dbContext.Walks.Remove(data);
+            await SaveWalk();
+            return data;
+        }
 
         #endregion
-        #region MyRegion\
+        
+        #region MyRegion
 
 
         #endregion
