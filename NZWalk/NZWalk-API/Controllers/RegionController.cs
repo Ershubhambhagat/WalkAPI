@@ -64,18 +64,23 @@ namespace NZWalk_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
-            if (addRegionRequestDTO is null)
+            if (ModelState.IsValid)
             {
+                if (addRegionRequestDTO is null)
+                {
 
-                return BadRequest(addRegionRequestDTO);
+                    return BadRequest(addRegionRequestDTO);
+                }
+
+                var RegionDomainModel = mapper.Map<RegionDto>(addRegionRequestDTO);
+                RegionDomainModel = await _regionRepository.CreateAsync(RegionDomainModel);
+                var RegionDto = (mapper.Map<RegionDto>(RegionDomainModel));
+                return Ok(RegionDto);
+
             }
             
-            var RegionDomainModel = mapper.Map<RegionDto>(addRegionRequestDTO);
-            RegionDomainModel = await _regionRepository.CreateAsync(RegionDomainModel);
-            var RegionDto=(mapper.Map<RegionDto>(RegionDomainModel)); 
-            return Ok(RegionDto);
-
-
+            return BadRequest(ModelState);
+                                                                                                                                  
         }
         #endregion
 
@@ -85,14 +90,18 @@ namespace NZWalk_API.Controllers
         [ActionName("Update")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            //Map DTO To Domain Model
-            var RegionDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
+            if (ModelState.IsValid)
+            {
+                //Map DTO To Domain Model
+                var RegionDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
 
-            await _regionRepository.UpdateAsync(id, RegionDomainModel);
+                await _regionRepository.UpdateAsync(id, RegionDomainModel);
 
-            //Convert Domain TO DTO
-            var regionDTO =mapper.Map<RegionDto>(RegionDomainModel);
-            return Ok(regionDTO);
+                //Convert Domain TO DTO
+                var regionDTO = mapper.Map<RegionDto>(RegionDomainModel);
+                return Ok(regionDTO);
+            }
+            return BadRequest(ModelState);
         }
         #endregion
 
