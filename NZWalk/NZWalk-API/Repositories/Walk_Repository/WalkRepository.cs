@@ -5,6 +5,7 @@ using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
+using System.Net.WebSockets;
 
 namespace NZWalk_API.Repositories.Walk_Repository
 {
@@ -53,10 +54,21 @@ namespace NZWalk_API.Repositories.Walk_Repository
 
         #endregion
 
-        #region GetAllWalkAsync
-        public async Task<List<Walk>> GetAllWalkAsync()
+        #region GetAllWalkAsync or Filtering
+        public async Task<List<Walk>> GetAllWalkAsync(string? FilterOn = null, string? FilteQuary = null)
         {
-            return await _dbContext.Walks.Include("Diffucalty").Include(x=>x.Region).ToListAsync();
+            var Walks = _dbContext.Walks.Include("Diffucalty").Include(x => x.Region).AsQueryable();
+            if (string.IsNullOrWhiteSpace(FilterOn) == false && string.IsNullOrWhiteSpace(FilteQuary) == false)
+            {
+                if (FilterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks=Walks.Where(x=>x.Name.Contains(FilteQuary));
+                }
+                
+                
+            }
+
+            return await Walks.ToListAsync();
         }
         #endregion
 
@@ -95,9 +107,5 @@ namespace NZWalk_API.Repositories.Walk_Repository
 
         #endregion
         
-        #region MyRegion
-
-
-        #endregion
     }
 }
