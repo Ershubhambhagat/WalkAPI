@@ -74,9 +74,9 @@ namespace NZWalk_API.Controllers
         #region GetAllWalkAsync
         [HttpGet]
 
-        public async Task<IActionResult> GetAllWalkAsync([FromQuery]string? FilterOn, [FromQuery]string? filterQuary, [FromQuery] string? sortBy, [FromQuery] bool?isAscending)
+        public async Task<IActionResult> GetAllWalkAsync([FromQuery]string? FilterOn, [FromQuery]string? filterQuary, [FromQuery] string? sortBy, [FromQuery] bool?isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            var walkDomainModel = await _walk.GetAllWalkAsync(FilterOn,filterQuary,sortBy,isAscending?? true);
+            var walkDomainModel = await _walk.GetAllWalkAsync(FilterOn,filterQuary,sortBy,isAscending?? true,pageNumber,pageSize);
 
             //Mapping to DTO 
              return Ok(_mapper.Map<List<WalkDto>>(walkDomainModel));

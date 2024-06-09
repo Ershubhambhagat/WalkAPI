@@ -55,8 +55,8 @@ namespace NZWalk_API.Repositories.Walk_Repository
 
         #endregion
 
-        #region GetAllWalkAsync or Filtering
-        public async Task<List<Walk>> GetAllWalkAsync(string? FilterOn = null, string? FilteQuary = null, string? sortBy = null, bool isAscending = true)
+        #region GetAllWalkAsync or Filtering or  Sorting or 
+        public async Task<List<Walk>> GetAllWalkAsync(string? FilterOn = null, string? FilteQuary = null, string? sortBy = null, bool isAscending = true, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize=1000)
         {
             var Walks = _dbContext.Walks.Include("Diffucalty").Include(x => x.Region).AsQueryable();
 
@@ -80,8 +80,10 @@ namespace NZWalk_API.Repositories.Walk_Repository
                     Walks = isAscending ? Walks.OrderBy(x => x.LengthInKm) : Walks.OrderByDescending(x => x.LengthInKm);
                 }
             }
-
-            return await Walks.ToListAsync();
+            //Pagination
+            var SkipResult = (pageNumber - 1) * pageNumber;
+            return await Walks.Skip(SkipResult).Take(pageSize).ToListAsync();
+            //return await Walks.ToListAsync();
         }
         #endregion
 
