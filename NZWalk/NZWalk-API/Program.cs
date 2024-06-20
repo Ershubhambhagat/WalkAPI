@@ -19,6 +19,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NZWalksDBContext>(options => options.
 UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
+
+//Auth In
+builder.Services.AddDbContext<NZWalkAuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalkAuthConnectionString")));
+
 builder.Services.AddScoped<IRegionRepository,RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
 
@@ -32,7 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateLifetime=true,
         ValidateIssuerSigningKey=true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration.["Jwt:Audience"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         
     });
