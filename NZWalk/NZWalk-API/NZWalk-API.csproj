@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Documantation\" />
-    <Folder Include="Model\DTO\RequestDTO\" />
   </ItemGroup>
 
 </Project>
