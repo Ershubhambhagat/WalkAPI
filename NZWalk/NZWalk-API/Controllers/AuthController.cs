@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZWalk_API.Model.DTO.AuthDTOs;
+using NZWalk_API.Repositories.Auth;
 
 namespace NZWalk_API.Controllers
 {
@@ -12,10 +14,12 @@ namespace NZWalk_API.Controllers
         #region ctor
         private const string Error = "Something Went Wrong";
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _token;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository token)
         {
             _userManager = userManager;
+            _token = token;
         }
 
 
@@ -62,12 +66,23 @@ namespace NZWalk_API.Controllers
             var user = await _userManager.FindByEmailAsync(loginRequestDto.Username);
             if (user != null)
             {
-               var checkPasswordResult= await _userManager.CheckPasswordAsync(user,loginRequestDto.Password);
+                var checkPasswordResult = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
                 if (checkPasswordResult)
                 {
-                    //Create Token
+                    //Get the Roles for User
 
-                    return Ok();
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles != null)
+                    {
+                        //Create Token
+                        var jwtToken = _token.CreateJWTToken(user, roles.ToList());
+                        var responce = new LoginResponseDto
+                        {
+                            JwtToken = jwtToken
+                        };
+                        return Ok(responce);
+                    }
+
                 }
             }
             return BadRequest("User name or Password is Incorrect ");
@@ -75,9 +90,9 @@ namespace NZWalk_API.Controllers
 
         #endregion
     }
-    
 
 
-   
+
+
 
 }
