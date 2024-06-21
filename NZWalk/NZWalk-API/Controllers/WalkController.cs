@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
-using System.Net.WebSockets;
 
 namespace NZWalk_API.Controllers
 {
@@ -56,7 +54,7 @@ namespace NZWalk_API.Controllers
             var Walk = await _walk.GetWalkById(id);
             if (Walk is null)
             {
-                var x ="Id \t "+ id + " \t is not Found in Database";
+                var x = "Id \t " + id + " \t is not Found in Database";
                 return Ok(x);
             }
             //Map Domain Model To DTO 
@@ -74,13 +72,13 @@ namespace NZWalk_API.Controllers
         #region GetAllWalkAsync
         [HttpGet]
 
-        public async Task<IActionResult> GetAllWalkAsync([FromQuery]string? FilterOn, [FromQuery]string? filterQuary, [FromQuery] string? sortBy, [FromQuery] bool?isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
+        public async Task<IActionResult> GetAllWalkAsync([FromQuery] string? FilterOn, [FromQuery] string? filterQuary, [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            var walkDomainModel = await _walk.GetAllWalkAsync(FilterOn,filterQuary,sortBy,isAscending?? true,pageNumber,pageSize);
+            var walkDomainModel = await _walk.GetAllWalkAsync(FilterOn, filterQuary, sortBy, isAscending ?? true, pageNumber, pageSize);
 
             //Mapping to DTO 
-             return Ok(_mapper.Map<List<WalkDto>>(walkDomainModel));
-           
+            return Ok(_mapper.Map<List<WalkDto>>(walkDomainModel));
+
 
         }
         #endregion
@@ -91,7 +89,7 @@ namespace NZWalk_API.Controllers
 
         public async Task<IActionResult> DeleteAsync(Guid Id)
         {
-            var DeleteData=await _walk.DeleteAsync(Id);
+            var DeleteData = await _walk.DeleteAsync(Id);
 
             if (DeleteData is null)
             {
@@ -107,7 +105,7 @@ namespace NZWalk_API.Controllers
         #region UpdateAsync
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute]Guid id,UpdateWalkRequestDTO updateWalkRequestDTO)
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, UpdateWalkRequestDTO updateWalkRequestDTO)
         {
             if (ModelState.IsValid)
             {

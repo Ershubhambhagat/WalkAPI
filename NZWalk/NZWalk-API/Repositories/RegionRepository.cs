@@ -1,7 +1,4 @@
 ﻿#region Using
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
@@ -28,11 +25,11 @@ namespace NZWalk_API.Repositories
         {
 
             var regionDto = await _nZWalksDBContext.Regions.AddAsync(region);
-                await SaveAsync();
-                //Map Domain Model back to DTO
-            
-               
-           return region;
+            await SaveAsync();
+            //Map Domain Model back to DTO
+
+
+            return region;
         }
 
         #endregion
@@ -42,12 +39,12 @@ namespace NZWalk_API.Repositories
         public async Task<RegionDto> DeleteAsync(Guid Id)
         {
             var ExistingRegion = await GetByIdAsync(Id);
-            
-            if(ExistingRegion is null)
+
+            if (ExistingRegion is null)
             {
                 return null;
             }
-             _nZWalksDBContext.Regions.Remove(ExistingRegion);
+            _nZWalksDBContext.Regions.Remove(ExistingRegion);
             await SaveAsync();
             return ExistingRegion;
         }
@@ -59,7 +56,7 @@ namespace NZWalk_API.Repositories
         public async Task<List<RegionDto>> GetAllAsync()
         {
 
-          var region=   await _nZWalksDBContext.Regions.ToListAsync();
+            var region = await _nZWalksDBContext.Regions.ToListAsync();
             return region;
 
 
@@ -72,7 +69,7 @@ namespace NZWalk_API.Repositories
         public async Task<RegionDto> GetByIdAsync(Guid Id)
         {
             return await _nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == Id);
-          
+
         }
         #endregion
 
@@ -80,7 +77,7 @@ namespace NZWalk_API.Repositories
         public async Task SaveAsync()
         {
             await _nZWalksDBContext.SaveChangesAsync();
-            
+
         }
 
         #endregion
@@ -96,7 +93,7 @@ namespace NZWalk_API.Repositories
             }
             existingRegion.Code = region.Code;
             existingRegion.RegionImageUrl = region.RegionImageUrl;
-            existingRegion.Name= region.Name;
+            existingRegion.Name = region.Name;
             await SaveAsync();
             return existingRegion;
 

@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace NZWalk_API.CustomActionFilter
 {
-    public class ValidateModelAttribute:ActionFilterAttribute
+    public class ValidateModelAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            if(context.ModelState.IsValid==false)
+            if (context.ModelState.IsValid == false)
             {
-                context.Result=new BadRequestResult();
+                context.Result = new BadRequestResult();
             }
         }
     }

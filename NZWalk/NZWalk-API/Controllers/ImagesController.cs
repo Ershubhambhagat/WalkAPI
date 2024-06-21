@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO.ImageDTOs;
+using NZWalk_API.Repositories.Image;
 
 namespace NZWalk_API.Controllers
 {
@@ -8,19 +9,37 @@ namespace NZWalk_API.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
+        #region CTOR
+        private readonly IImageRepository _imageRepository;
 
+        public ImagesController(IImageRepository imageRepository)
+        {
+            _imageRepository = imageRepository;
+        }
+        #endregion
 
-        #region Uplode
+        #region UplodeImage
         [HttpPost]
         public async Task<IActionResult> Uplode([FromForm] ImageUploadRequestDto request)
         {
 
             ValidateFileUpload(request);
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                //Uplodeing Image 
-                return Ok();
+                //DTOs to Domain Model 
+                var imgaeDomainModel = new Image
+                {
+                    File = request.File,
+                    //get File Extension
+                    FileExtension = Path.GetExtension(request.File.FileName),
+                    FileSizeInBytes = request.File.Length,
+                    FileName = request.File.FileName,
+                    FileDescription = request.FileDescription,
+                };
 
+                //Uploading Image using repo 
+                await _imageRepository.Upload(imgaeDomainModel);
+                return Ok(imgaeDomainModel);
 
             }
             return BadRequest(ModelState);
@@ -57,13 +76,5 @@ namespace NZWalk_API.Controllers
         #endregion
 
 
-        #region MyRegion
-
-        #endregion
-
-
-        #region MyRegion
-
-        #endregion
     }
 }

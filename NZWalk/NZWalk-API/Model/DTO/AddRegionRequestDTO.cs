@@ -5,7 +5,7 @@ namespace NZWalk_API.Model.DTO
     public class AddRegionRequestDTO
     {
         [Required]
-        [MinLength(3,ErrorMessage= "Name has to be minimum 3 Character")]
+        [MinLength(3, ErrorMessage = "Name has to be minimum 3 Character")]
         [MaxLength(30, ErrorMessage = "Name has to be Maximum 30 Character")]
         public string Name { get; set; }
         [Required]

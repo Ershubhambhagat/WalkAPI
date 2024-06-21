@@ -4,24 +4,24 @@ using NZWalk_API.Model.DTO;
 
 namespace NZWalk_API.Data
 {
-    public class NZWalksDBContext:DbContext
+    public class NZWalksDBContext : DbContext
     {
         //Type implemented
-        public NZWalksDBContext(DbContextOptions<NZWalksDBContext> dbContextOptions):base(dbContextOptions)
+        public NZWalksDBContext(DbContextOptions<NZWalksDBContext> dbContextOptions) : base(dbContextOptions)
         {
-                
+
         }
         public DbSet<Difficulty> Difficulty { get; set; }
         public DbSet<RegionDto> Regions { get; set; }
         public DbSet<Walk> Walks { get; set; }
-        public DbSet<Image>Images { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             #region //Seed Data for Difficulties
-         //   var difficulties = new List<Difficulty>()
+            //   var difficulties = new List<Difficulty>()
             //{
             //    new Difficulty()
             //    {
@@ -40,7 +40,7 @@ namespace NZWalk_API.Data
 
             //};
             ////Seed Difficulties in DataBase
-           // modelBuilder.Entity<Difficulty>().HasData(difficulties);
+            // modelBuilder.Entity<Difficulty>().HasData(difficulties);
 
             #endregion
 

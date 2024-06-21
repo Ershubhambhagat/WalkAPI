@@ -4,10 +4,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using NZWalk_API.CustomActionFilter;
-using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Interface;

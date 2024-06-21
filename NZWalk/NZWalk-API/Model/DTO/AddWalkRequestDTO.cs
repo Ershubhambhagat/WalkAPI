@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Antiforgery;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NZWalk_API.Model.DTO
 {
@@ -12,7 +11,7 @@ namespace NZWalk_API.Model.DTO
         [Required]
         public double LengthInKm { get; set; }
         [Required]
-        [Range(1,100)]
+        [Range(1, 100)]
         public string? WalkImageUrl { get; set; }
         [Required]
         public Guid DiffucaltyId { get; set; }

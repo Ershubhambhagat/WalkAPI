@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client.Extensibility;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace NZWalk_API.Repositories.Auth
 {
-    
+
     public class TokenRepository : ITokenRepository
     {
         #region Ctor
@@ -24,7 +21,7 @@ namespace NZWalk_API.Repositories.Auth
         public string CreateJWTToken(IdentityUser user, List<string> Roles)
         {
             //Create Claims from Roles
-            var clams=new List<Claim>();
+            var clams = new List<Claim>();
             clams.Add(new Claim(ClaimTypes.Email, user.Email));
 
             foreach (var role in Roles)
@@ -47,9 +44,9 @@ namespace NZWalk_API.Repositories.Auth
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        
+
         #endregion
     }
-   
 
- }
+
+}

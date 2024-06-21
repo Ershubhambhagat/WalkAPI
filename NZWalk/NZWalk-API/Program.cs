@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NZWalk_API.Data;
 using NZWalk_API.Mappings;
 using NZWalk_API.Repositories;
 using NZWalk_API.Repositories.Auth;
+using NZWalk_API.Repositories.Image;
 using NZWalk_API.Repositories.Interface;
 using NZWalk_API.Repositories.Walk_Repository;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
@@ -17,9 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(Options=>
+builder.Services.AddSwaggerGen(Options =>
 {
     Options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -28,12 +32,12 @@ builder.Services.AddSwaggerGen(Options=>
 
     });
     Options.AddSecurityDefinition(
-        JwtBearerDefaults.AuthenticationScheme,new OpenApiSecurityScheme
+        JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
         {
-            Name="Authorization",
-            In=ParameterLocation.Header,
-            Type=SecuritySchemeType.ApiKey,
-            Scheme=JwtBearerDefaults.AuthenticationScheme,
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = JwtBearerDefaults.AuthenticationScheme,
         });
     Options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -60,9 +64,10 @@ UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString"
 //Auth In
 builder.Services.AddDbContext<NZWalkAuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalkAuthConnectionString")));
 
-builder.Services.AddScoped<IRegionRepository,RegionRepository>();
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
-builder.Services.AddScoped<ITokenRepository,TokenRepository>();    
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
@@ -77,7 +82,7 @@ builder.Services.AddIdentityCore<IdentityUser>()
 //configur Identity 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Password.RequireDigit=false;
+    options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
@@ -85,7 +90,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 
 
-    
+
 
 
 
@@ -95,14 +100,15 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer=true
-        ,ValidateAudience=true,
-        ValidateLifetime=true,
-        ValidateIssuerSigningKey=true,
+        ValidateIssuer = true
+        ,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
     });
 
 
@@ -120,7 +126,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
+//for image view || Serving Static Files Through ASPNET Core Web API
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Images")),
+    RequestPath="/Images"
+});
 app.MapControllers();
 
 app.Run();
