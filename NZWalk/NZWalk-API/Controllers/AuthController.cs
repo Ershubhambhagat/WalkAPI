@@ -65,7 +65,7 @@ namespace NZWalk_API.Controllers
                var checkPasswordResult= await _userManager.CheckPasswordAsync(user,loginRequestDto.Password);
                 if (checkPasswordResult)
                 {
-                    //Create Tocken
+                    //Create Token
 
                     return Ok();
                 }
