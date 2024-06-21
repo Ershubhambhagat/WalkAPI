@@ -9,7 +9,8 @@ namespace NZWalk_API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private const string Error = "Somthing Went Wrong";
+        #region ctor
+        private const string Error = "Something Went Wrong";
         private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(UserManager<IdentityUser> userManager)
@@ -17,11 +18,17 @@ namespace NZWalk_API.Controllers
             _userManager = userManager;
         }
 
+
+        #endregion
+
+        #region Register
+
+
         public static string Error1 => Error;
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterRequestDto registerRequestDto)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
             var IdentityUser = new IdentityUser
             {
@@ -29,8 +36,8 @@ namespace NZWalk_API.Controllers
                 Email = registerRequestDto.Username
 
             };
-            var identityResult =await _userManager.CreateAsync(IdentityUser, registerRequestDto.Password);
-            if(identityResult.Succeeded)
+            var identityResult = await _userManager.CreateAsync(IdentityUser, registerRequestDto.Password);
+            if (identityResult.Succeeded)
             {
                 if (registerRequestDto.Roles is not null && registerRequestDto.Roles.Any())
                 {
@@ -44,5 +51,33 @@ namespace NZWalk_API.Controllers
             }
             return BadRequest(Error1);
         }
+        #endregion
+
+        #region Login
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginRequestDto.Username);
+            if (user != null)
+            {
+               var checkPasswordResult= await _userManager.CheckPasswordAsync(user,loginRequestDto.Password);
+                if (checkPasswordResult)
+                {
+                    //Create Tocken
+
+                    return Ok();
+                }
+            }
+            return BadRequest("User name or Password is Incorrect ");
+        }
+
+        #endregion
     }
+    
+
+
+   
+
 }
