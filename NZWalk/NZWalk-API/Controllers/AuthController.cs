@@ -30,6 +30,8 @@ namespace NZWalk_API.Controllers
 
         public static string Error1 => Error;
 
+        string e;
+
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
@@ -40,20 +42,32 @@ namespace NZWalk_API.Controllers
                 Email = registerRequestDto.Username
 
             };
-            var identityResult = await _userManager.CreateAsync(IdentityUser, registerRequestDto.Password);
-            if (identityResult.Succeeded)
+            try
             {
-                if (registerRequestDto.Roles is not null && registerRequestDto.Roles.Any())
+                var identityResult = await _userManager.CreateAsync(IdentityUser, registerRequestDto.Password);
+                if (identityResult.Succeeded)
                 {
-                    //Add roles to user
-                    identityResult = await _userManager.AddToRoleAsync(IdentityUser, registerRequestDto.Roles);
-                    if (identityResult.Succeeded)
+                    if (registerRequestDto.Roles is not null && registerRequestDto.Roles.Any())
                     {
-                        return Ok("User Was Created , Login...");
+                        //Add roles to user
+                        identityResult = await _userManager.AddToRolesAsync(IdentityUser, registerRequestDto.Roles);
+                        if (identityResult.Succeeded)
+                        {
+                            return Ok("User Was Created , Login...");
+                        }
                     }
                 }
             }
-            return BadRequest(Error1);
+            catch (Exception ex)
+            {
+                e=ex.Message;
+                return BadRequest(ex);
+
+            }
+
+            return Ok(e.ToUpper());
+
+
         }
         #endregion
 

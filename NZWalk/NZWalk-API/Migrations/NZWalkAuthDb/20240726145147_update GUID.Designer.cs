@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NZWalk_API.Data;
 
@@ -11,9 +12,11 @@ using NZWalk_API.Data;
 namespace NZWalk_API.Migrations.NZWalkAuthDb
 {
     [DbContext(typeof(NZWalkAuthDbContext))]
-    partial class NZWalkAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240726145147_update GUID")]
+    partial class updateGUID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +54,15 @@ namespace NZWalk_API.Migrations.NZWalkAuthDb
                     b.HasData(
                         new
                         {
-                            Id = "d859333c-eea5-48d6-ad98-9c968fb75491",
-                            ConcurrencyStamp = "d859333c-eea5-48d6-ad98-9c968fb75491",
+                            Id = "readerRoleID",
+                            ConcurrencyStamp = "A036ED82-C7E0-4E09-84EB-8BE9FBFD7212",
                             Name = "Reader",
                             NormalizedName = "READER"
                         },
                         new
                         {
-                            Id = "2aaf722c-d5b9-4a53-a55f-b5f4eaa130eb",
-                            ConcurrencyStamp = "2aaf722c-d5b9-4a53-a55f-b5f4eaa130eb",
+                            Id = "writerRoleID",
+                            ConcurrencyStamp = "AD334324-4BE9-47F5-B8E8-98541B6FB2AE",
                             Name = "Writer",
                             NormalizedName = "WRITER"
                         });

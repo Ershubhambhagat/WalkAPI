@@ -12,6 +12,7 @@ namespace NZWalk_API.Model.DTO.AuthDTOs
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string Roles { get; set; }
+        [Required]
+        public string[] Roles { get; set; }
     }
 }
