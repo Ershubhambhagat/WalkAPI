@@ -11,6 +11,7 @@ using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Interface;
+using System.Net;
 using System.Text.Json;
 #endregion
 namespace NZWalk_API.Controllers
@@ -40,15 +41,17 @@ namespace NZWalk_API.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-            logger.LogInformation("GetAll trigger");
 
-            logger.LogWarning("This is warning Log");
 
-            logger.LogError("This is Error Log");
+            //logger.LogInformation("GetAll trigger");
+
+            //logger.LogWarning("This is warning Log");
+
+            // logger.LogError("This is Error Log");
             //get data from database - Domain Model 
             var regions = await _regionRepository.GetAllAsync();
             //Map domain model to DTO
-            logger.LogInformation($"Finish :>>>> {JsonSerializer.Serialize(regions)}");
+           // logger.LogInformation($"Finish :>>>> {JsonSerializer.Serialize(regions)}");
 
             var RegionDto = mapper.Map<List<RegionDto>>(regions);
             return Ok(RegionDto);
@@ -80,21 +83,32 @@ namespace NZWalk_API.Controllers
         #region Create
         [HttpPost]
         [ValidateModel]// Coustom Validater 
-        [Authorize(Roles = "Writer")]
+       // [Authorize(Roles = "Writer")]
 
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
 
-            if (addRegionRequestDTO is null)
+            try
+            {
+               // throw new Exception("This is man made error ");
+                if (addRegionRequestDTO is null)
+                {
+
+                    return BadRequest(addRegionRequestDTO);
+                }
+
+                var RegionDomainModel = mapper.Map<RegionDto>(addRegionRequestDTO);
+                RegionDomainModel = await _regionRepository.CreateAsync(RegionDomainModel);
+                var RegionDto = (mapper.Map<RegionDto>(RegionDomainModel));
+                return Ok(RegionDto);
+            }
+            catch (Exception)
             {
 
-                return BadRequest(addRegionRequestDTO);
+                //Log this Exception 
+                return Problem("Something went wronge", null, (int)HttpStatusCode.InternalServerError);
+                throw;
             }
-
-            var RegionDomainModel = mapper.Map<RegionDto>(addRegionRequestDTO);
-            RegionDomainModel = await _regionRepository.CreateAsync(RegionDomainModel);
-            var RegionDto = (mapper.Map<RegionDto>(RegionDomainModel));
-            return Ok(RegionDto);
 
 
         }

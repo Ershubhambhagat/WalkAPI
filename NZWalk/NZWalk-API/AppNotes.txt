@@ -39,3 +39,17 @@ ______________________________For Loggng in text__________________________
 Serilog
 Serilog.AspNetCore
 Serilog.Sinks.File
+
+______________________________Bearer_______________________
+
+Globle Exception Handler Implement 
+
+______________________________ShortCut_______________________
+
+CTRL R, CTRL M : refectore the Function 
+
+Ctrl + K, Ctrl + S :Surround with (… if/try/foreach) 
+
+CTRL M , CTRL O = Colleps
+
+CTRL R ,CTRL G : using Statement Formate

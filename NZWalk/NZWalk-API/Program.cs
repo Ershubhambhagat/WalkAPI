@@ -14,6 +14,7 @@ using System.Text;
 using NZWalk_API.Repositories.Image_Repository;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using NZWalk_API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -131,6 +132,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Middleware
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
