@@ -12,6 +12,7 @@ using NZWalk_API.Repositories.Walk_Repository;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
 using System.Text;
 using NZWalk_API.Repositories.Image_Repository;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -123,6 +124,11 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "ImageStore")),
+    RequestPath= "/ImageStore"
+});
 
 app.MapControllers();
 
