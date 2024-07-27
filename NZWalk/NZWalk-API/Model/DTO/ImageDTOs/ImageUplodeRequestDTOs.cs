@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NZWalk_API.Model.DTO.ImageDTOs
 {
-    public class ImageUplodeRequestDTOs
+    public class ImageUploadRequestDTOs
     {
         [Required]
         public IFormFile File { get; set; }

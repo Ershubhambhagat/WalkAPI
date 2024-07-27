@@ -5,6 +5,6 @@ namespace NZWalk_API.Repositories.Image_Repository
 {
     public interface IImageRepository
     {
-        public Task<Image> Uplode(Image image);
+        public Task<Image> Upload(Image image);
     }
 }

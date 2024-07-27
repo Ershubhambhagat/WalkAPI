@@ -18,8 +18,8 @@ namespace NZWalk_API.Controllers
             _imageRepository = imageRepository;
         }
         [HttpPost]
-        [Route("Uplode")]
-        public async Task<IActionResult> upload([FromForm]ImageUplodeRequestDTOs requestImage)
+        [Route("Upload")]
+        public async Task<IActionResult> upload([FromForm]ImageUploadRequestDTOs requestImage)
         {
 
 
@@ -40,14 +40,14 @@ namespace NZWalk_API.Controllers
 
 
                 //uplode file path in database
-                await _imageRepository.Uplode(imageDomainModel);
+                await _imageRepository.Upload(imageDomainModel);
                 return Ok(imageDomainModel);
             }
             return BadRequest(ModelState);
 
         }
         //validate image Extension File and size
-        private void ValidateFileUpload(ImageUplodeRequestDTOs requestImage)
+        private void ValidateFileUpload(ImageUploadRequestDTOs requestImage)
         {
             var allowExtension = new string[] { ".jpg",".png"};
             if (!allowExtension.Contains(Path.GetExtension(requestImage.File.FileName)))

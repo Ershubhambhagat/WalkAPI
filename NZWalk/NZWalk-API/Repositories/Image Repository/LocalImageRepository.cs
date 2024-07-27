@@ -17,7 +17,7 @@ namespace NZWalk_API.Repositories.Image_Repository
         }
 
 
-        public async Task<Image> Uplode(Image image)
+        public async Task<Image> Upload(Image image)
         {
 
                 var localfilepath = Path.Combine(webHost.ContentRootPath, "ImageStore",
