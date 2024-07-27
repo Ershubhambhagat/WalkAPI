@@ -1,25 +1,36 @@
+ 
+______________________________Bearer_______________________
+ 
+
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIldyaXRlciIsIlJlYWRlciJdLCJleHAiOjE3MjIwMTMxMDEsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcyMzM7IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIzMzsifQ.E5MCOsa9q7G5Wdsa25GTjAIk_UB7ss55xV38Zc8jkF0
+
+ 
+______________________________User Role_______________________
+ 
 
 var readerRoleID = "d859333c-eea5-48d6-ad98-9c968fb75491";
 var writerRoleID = "2aaf722c-d5b9-4a53-a55f-b5f4eaa130eb";
 
 
-
+ 
+______________________________DB Migration_______________________
+ 
 
  
  if you have more then one migration then mantion the dbcontext name;
  
  add-migration "update GUID" -Context NZWalkAuthDbContext
+ 
+ 
  update database -Context NZWalkAuthDbContext
  
  
- For Log your data in Console 
+
+ 
+______________________________For Loggng in Console_______________________
  
  
- Serilog
+Serilog
 Serilog.AspNetCore
 Serilog.Sinks.Console
 
-Serilog
-Serilog.AspNetCore
-Serilog.Sinks.File
