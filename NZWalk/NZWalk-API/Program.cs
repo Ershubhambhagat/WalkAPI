@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration()
 .WriteTo.Console()
+.WriteTo.File("Logs/NzWalks_Log.txt",rollingInterval:RollingInterval.Minute)
 .MinimumLevel.Information()
 .CreateLogger();
 

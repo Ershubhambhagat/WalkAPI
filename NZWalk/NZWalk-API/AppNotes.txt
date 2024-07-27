@@ -34,3 +34,8 @@ Serilog
 Serilog.AspNetCore
 Serilog.Sinks.Console
 
+______________________________For Loggng in text__________________________
+ 
+Serilog
+Serilog.AspNetCore
+Serilog.Sinks.File
