@@ -11,6 +11,7 @@ using NZWalk_API.Data;
 using NZWalk_API.Model.Domain;
 using NZWalk_API.Model.DTO;
 using NZWalk_API.Repositories.Interface;
+using System.Text.Json;
 #endregion
 namespace NZWalk_API.Controllers
 {
@@ -22,23 +23,33 @@ namespace NZWalk_API.Controllers
 
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionController> logger;
 
-        public RegionController(IRegionRepository regionRepository, IMapper mapper)
+        public RegionController(IRegionRepository regionRepository, IMapper mapper,
+            ILogger<RegionController> logger)
         {
             _regionRepository = regionRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
         #endregion
 
         #region Get all Region
         [HttpGet]
-        [Authorize(Roles = "Writer,Reader")]
+        //[Authorize(Roles = "Writer,Reader")]
 
         public async Task<IActionResult> GetAll()
         {
+            logger.LogInformation("GetAll trigger");
+
+            logger.LogWarning("This is warning Log");
+
+            logger.LogError("This is Error Log");
             //get data from database - Domain Model 
             var regions = await _regionRepository.GetAllAsync();
             //Map domain model to DTO
+            logger.LogInformation($"Finish :>>>> {JsonSerializer.Serialize(regions)}");
+
             var RegionDto = mapper.Map<List<RegionDto>>(regions);
             return Ok(RegionDto);
         }

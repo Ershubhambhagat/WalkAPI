@@ -13,10 +13,22 @@ using NZWalk_API.Repositories.Walk_Repository.Interface;
 using System.Text;
 using NZWalk_API.Repositories.Image_Repository;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+#region lOGGER configuration
+
+var logger = new LoggerConfiguration()
+.WriteTo.Console()
+.MinimumLevel.Information()
+.CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+#endregion
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
