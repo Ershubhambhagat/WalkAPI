@@ -11,6 +11,7 @@ using NZWalk_API.Repositories.Interface;
 using NZWalk_API.Repositories.Walk_Repository;
 using NZWalk_API.Repositories.Walk_Repository.Interface;
 using System.Text;
+using NZWalk_API.Repositories.Image_Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(Options=>
 {
@@ -62,7 +64,8 @@ builder.Services.AddDbContext<NZWalkAuthDbContext>(options => options.UseSqlServ
 
 builder.Services.AddScoped<IRegionRepository,RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
-builder.Services.AddScoped<ITokenRepository,TokenRepository>();    
+builder.Services.AddScoped<ITokenRepository,TokenRepository>();
+builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
