@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NZWalk.UI.Models;
 using NZWalk.UI.Models.DTOs;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -93,5 +95,55 @@ namespace NZWalk.UI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult>Edit(RegionDto regionDto)
+        {
+            try
+            {
+                var client = httpClientFactory.CreateClient();
+                var httpRequestMessage = new HttpRequestMessage()
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri($"https://localhost:7233/api/Region/{regionDto.Id}"),
+                    Content = new StringContent(JsonSerializer.Serialize(regionDto), Encoding.UTF8, "application/json")
+                };
+                var httpRequestMessage2 = await client.SendAsync(httpRequestMessage);
+              //  httpRequestMessage2.EnsureSuccessStatusCode();
+                var responce = await httpRequestMessage2.Content.ReadFromJsonAsync<RegionDto>();
+
+                if (responce != null)
+                {
+                    return RedirectToAction("Index", "Regions");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(RegionDto regionDto)
+        {
+            try
+            {
+
+                var client = httpClientFactory.CreateClient();
+                var httpRequestMessage2 = await client.DeleteAsync($"https://localhost:7233/api/Region/{regionDto.Id}");
+
+                httpRequestMessage2.EnsureSuccessStatusCode();
+                return RedirectToAction("Index", "Regions");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return View("Edit");
+
+        }
     }
 }

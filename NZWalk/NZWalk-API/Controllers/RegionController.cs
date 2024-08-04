@@ -61,7 +61,7 @@ namespace NZWalk_API.Controllers
         #region By ID
         [HttpGet]
         [Route("{id:Guid}")]
-        [Authorize(Roles = "Writer,Reader")]
+        //[Authorize(Roles = "Writer,Reader")]
 
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -118,8 +118,8 @@ namespace NZWalk_API.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ActionName("Update")]
-        [ValidateModel]// Coustom Validater 
-        [Authorize(Roles = "Writer")]
+        //[ValidateModel]// Coustom Validater 
+       // [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
 
@@ -138,7 +138,7 @@ namespace NZWalk_API.Controllers
         #region Delete
         [HttpDelete]
         [Route("{id:Guid}")]
-        [Authorize(Roles = "Writer")]
+        //[Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var ExistingRegion = await _regionRepository.DeleteAsync(id);
