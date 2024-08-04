@@ -8,5 +8,16 @@
 /NZWalk/NZWalk-API/obj
 /NZWalk/.vs
 /NZWalk/NZWalk-API/bin/Debug/net8.0
+
 ImageStore/
-/NZWalk/NZWalk-API/Logs
+/Logs
+NZWalk/NZWalk-API/Logs
+/NZWalk/NZWalk.UI/obj/Debug/net7.0
+bin/
+/NZWalk/NZWalk.UI/bin
+NZWalk.UI/obj/
+net7.0/
+
+
+**/obj/
+/NZWalk/NZWalk.UI/obj/Debug/net7.0/
