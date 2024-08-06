@@ -1,4 +1,25 @@
-# What I Learned from This Project
+# Learn and Implement in ASP.NET Core Web API Course
+
+In this course, I will learn and implement:
+
+- **Understand REST APIs** by creating a Web API using ASP.NET Core and .NET 7
+- **Understand REST Principles**
+- **Understand Dependency Injection and Benefits**
+- **Creating New ASP.NET Core Web API Project**
+- **Understand .NET8 WEB API Project** In .NET 8 and C#
+- **Learn And Install Entity Framework Core (EF Core)** In ASP.NET Core Web API Project
+- **Learn Entity Framework Core Migrations**
+- **Understand the difference between Domain models and DTOs**
+- **Understand Domain Models and Repository Pattern**
+- **Use Swagger To Test ASPNET Core WEB API project**
+- **Learn How To Map Models To One Another Using Automapper**
+- **Learn Asynchronous Programming (Async Await)**
+- **Validate ASP.NET Core WEB API**
+- **Secure your ASP.NET Core Web API** using Microsoft Identity by adding Authentication and Role-Based Authorization to your REST API.
+- **Add JWT Authentication to ASP.NET Core Web API** by creating JWT Tokens for API Clients.
+- **Understand and Add Authentication and Authorization To ASP.NET Core API** and Create Read and Write Users To Test this Via Postman
+- **Incorporate ASP.NET JWT Authentication Into SwaggerUI**
+- **Add advanced functionality like Filtering, Sorting, and Pagination** to your ASP.NET Core Web API.
 
 ## ASP.NET Core Web API and .NET 8
 - **Learned, understood and created** an ASP.NET Core Web API from scratch using .NET 8.
@@ -41,42 +62,9 @@
 
 ## Description
 
-**THIS COURSE HAS BEEN UPDATED TO THE LATEST VERSION [.NET8]**
 
-The course is compatible with both versions - **.NET7 & .NET8**.
-
-This is a complete guide to creating **ASP.NET Core Web API** using **.NET8**, **Entity Framework Core (EF Core)**, and **SQL Server** database.
-
-With over **11,000 student enrolments** and more than **2,000 5-star reviews**, this course has helped students from all backgrounds to learn and implement ASP.NET core Web API.
-
-This course is for all skill levels and best suits beginners and intermediate developers who have gained knowledge in **C#** and **ASP.NET Web MVC** and want to use their skills to learn **ASP.NET Core** and specifically **ASP.NET Core Web API**.
-
-
-# Learn and Implement in ASP.NET Core Web API Course
-
-In this course, you will learn and implement:
-
-- **Understand REST APIs** by creating a Web API using ASP.NET Core and .NET 7
-- **Understand REST Principles**
-- **Understand Dependency Injection and Benefits**
-- **Creating New ASP.NET Core Web API Project**
-- **Understand .NET8 WEB API Project** In .NET 8 and C#
-- **Learn And Install Entity Framework Core (EF Core)** In ASP.NET Core Web API Project
-- **Learn Entity Framework Core Migrations**
-- **Understand the difference between Domain models and DTOs**
-- **Understand Domain Models and Repository Pattern**
-- **Use Swagger To Test ASPNET Core WEB API project**
-- **Learn How To Map Models To One Another Using Automapper**
-- **Learn Asynchronous Programming (Async Await)**
-- **Validate ASP.NET Core WEB API**
-- **Secure your ASP.NET Core Web API** using Microsoft Identity by adding Authentication and Role-Based Authorization to your REST API.
-- **Add JWT Authentication to ASP.NET Core Web API** by creating JWT Tokens for API Clients.
-- **Understand and Add Authentication and Authorization To ASP.NET Core API** and Create Read and Write Users To Test this Via Postman
-- **Incorporate ASP.NET JWT Authentication Into SwaggerUI**
-- **Add advanced functionality like Filtering, Sorting, and Pagination** to your ASP.NET Core Web API.
 
 ## Course Structure
-# Course Structure
 
 ## Getting Started with REST and ASP.NET Core
 
